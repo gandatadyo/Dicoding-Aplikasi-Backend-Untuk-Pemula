@@ -66,15 +66,15 @@ const addBookHandler = (request, h) => {
 const getAllBooksHandler = (request) => {
   const { name, reading, finished } = request.query;
 
-  function checkReading(item) {
+  function checkReading(itemtemp) {
     let flag = false;
     if (reading !== undefined) {
       if (reading === 0) {
-        if (item.reading === false) {
+        if (itemtemp.reading === false) {
           flag = true;
         }
       } else if (reading === 1) {
-        if (item.reading === true) {
+        if (itemtemp.reading === true) {
           flag = true;
         }
       }
@@ -83,15 +83,15 @@ const getAllBooksHandler = (request) => {
     }
     return flag;
   }
-  function checkFinished(item) {
+  function checkFinished(itemtemp) {
     let flag = false;
     if (finished !== undefined) {
       if (finished === 0) {
-        if (item.finished === false) {
+        if (itemtemp.finished === false) {
           flag = true;
         }
       } else if (finished === 1) {
-        if (item.finished === true) {
+        if (itemtemp.finished === true) {
           flag = true;
         }
       }
@@ -103,34 +103,30 @@ const getAllBooksHandler = (request) => {
 
   const dataresult = [];
   if (name !== undefined) {
-    for (let i = 0; i < books.length; i = +1) {
-      const item = books[i];
-      const strname = item.name;
+    for (let i = 0; i < books.length; i += 1) {
+      const strname = books[i].name;
       const flagcontain = strname.search(name);
       if (flagcontain !== -1) {
         if (checkReading(books[i])) {
           if (checkFinished(books[i])) {
-            dataresult.push(item);
-            // dataresult.push({
-            //     "id": item.id,
-            //     "name": item.name,
-            //     "publisher": item.publisher
-            // })
+            dataresult.push({
+              id: books[i].id,
+              name: books[i].name,
+              publisher: books[i].publisher,
+            });
           }
         }
       }
     }
   } else {
-    for (let i = 0; i < books.length; i = +1) {
-      const item = books[i];
+    for (let i = 0; i < books.length; i += 1) {
       if (checkReading(books[i])) {
         if (checkFinished(books[i])) {
-          dataresult.push(item);
-          // dataresult.push({
-          //     "id": item.id,
-          //     "name": item.name,
-          //     "publisher": item.publisher
-          // })
+          dataresult.push({
+            id: books[i].id,
+            name: books[i].name,
+            publisher: books[i].publisher,
+          });
         }
       }
     }
